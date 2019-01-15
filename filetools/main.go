@@ -15,21 +15,21 @@ func check(e error) {
 
 func main() {
 	// write to a file
-	data0, err := os.Create("test.txt")
+	file, err := os.Create("test.txt")
 	check(err)
 	for i := 0; i < 5; i++ {
-		data0.WriteString(fmt.Sprintf("hello %06d\n", i))
+		file.WriteString(fmt.Sprintf("hello %06d\n", i))
 	}
-	data0.Close()
+	file.Close()
 
 	// Read the file to bytes
-	data1, err := ioutil.ReadFile("test.txt")
+	data, err := ioutil.ReadFile("test.txt")
 	check(err)
-	fmt.Println("data1:", data1)
-	fmt.Print("String of data1:\n", string(data1))
+	fmt.Println("data:", data)
+	fmt.Print("String of data:\n", string(data))
 
 	// Read lines of the file
-	file, err := os.Open("test.txt")
+	file, err = os.Open("test.txt")
 	check(err)
 	input := bufio.NewScanner(file)
 	fmt.Println("Read lines of the file:")
