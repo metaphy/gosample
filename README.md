@@ -1,2 +1,2 @@
 # gosample
-This project consists of samples of go programming language
+This project consists of samples of go programming language. 
