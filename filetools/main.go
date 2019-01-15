@@ -38,7 +38,7 @@ func main() {
 	}
 	file.Close()
 
-	// Reader
+	// Reader. read to bytes
 	file, err = os.Open("test.txt")
 	reader := bufio.NewReader(file)
 	bytes, err := reader.Peek(10)
