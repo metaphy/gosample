@@ -1,6 +1,6 @@
 /*
-Find the location of a six-digit number at PI
-./pi 123456
+Find the location of a six-digit number at PI.
+Usage: $ ./pi 123456
 */
 package main
 
