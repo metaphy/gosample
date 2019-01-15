@@ -1,6 +1,6 @@
 /*
-Find all six-digit numbers' location at PI
-a file named "result" generated
+Find all 6-digit numbers' location at PI
+A file named "result" generated
 */
 package main
 
@@ -29,12 +29,12 @@ func index(searchStr string, bytes []byte) int {
 }
 
 func main() {
-	file, err := os.Open("/Users/peter/Work/pi-billion.txt")
-	var readBytes int64
-	var cycles int64
-	var i int64
-
+	const READ_BYTES int64 = 1000
+	const READ_CYCLES int64 = 1000000
+	var i int64 = 0
 	start := time.Now()
+
+	file, err := os.Open("/Users/peter/Work/pi-billion.txt")
 	// to search all of the 000000~999999 numbers
 	mp := make(map[string]int64)
 	for k := 0; k < 1000000; k++ {
@@ -47,15 +47,12 @@ func main() {
 	check(err)
 	defer result.Close()
 
-	readBytes = 1000
-	cycles = 1000000
-	bytes := make([]byte, readBytes)
-
-	for i = 0; i <= cycles; i++ {
+	bytes := make([]byte, READ_BYTES)
+	for i = 0; i <= READ_CYCLES; i++ {
 		if i == 0 {
 			_, err = file.Seek(0, 0)
 		} else {
-			_, err = file.Seek(i*(readBytes-5), 0)
+			_, err = file.Seek(i*(READ_BYTES-5), 0)
 		}
 		check(err)
 		_, err = file.Read(bytes)
@@ -65,7 +62,7 @@ func main() {
 		for key := range mp {
 			if strings.Contains(str, key) {
 				relative := index(key, bytes)
-				mp[key] = i*(readBytes-5) + int64(relative) - 1
+				mp[key] = i*(READ_BYTES-5) + int64(relative) - 1
 				result.WriteString(fmt.Sprintf("\"%s\" at %d\n", key, mp[key]))
 				delete(mp, key)
 			}
