@@ -17,8 +17,8 @@ func check(e error) {
 }
 
 func main() {
-	var readBytes int64 = 1000
-	var cycles int64 = 1000000
+	var readBytes int64 = 256
+	var cycles int64 = 1000000000 / 256
 	var i int64
 	var searchStr string
 	bytes := make([]byte, readBytes)
