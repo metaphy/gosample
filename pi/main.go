@@ -16,17 +16,6 @@ func check(e error) {
 	}
 }
 
-func index(searchStr string, bytes []byte) int {
-	for i := 0; i <= len(bytes)-len(searchStr); i++ {
-		if searchStr[0] == bytes[i] && searchStr[1] == bytes[i+1] &&
-			searchStr[2] == bytes[i+2] && searchStr[3] == bytes[i+3] &&
-			searchStr[4] == bytes[i+4] && searchStr[5] == bytes[i+5] {
-			return i
-		}
-	}
-	return -1
-}
-
 func main() {
 	file, err := os.Open("/Users/peter/Work/pi-billion.txt")
 	var readBytes int64
@@ -55,10 +44,11 @@ func main() {
 		check(err)
 
 		str := string(bytes)
-		if strings.Contains(str, searchStr) {
-			relative := index(searchStr, bytes)
+		index := strings.Index(str, searchStr)
+		if index >= 0 {
+			location := i*(readBytes-5) + int64(index) - 1
 			fmt.Printf("\"%s\" is located at %d \n%s\n", searchStr,
-				i*(readBytes-5)+int64(relative)-1, string(bytes))
+				location, string(bytes))
 			break
 		}
 	}
