@@ -17,21 +17,20 @@ func check(e error) {
 }
 
 func main() {
-	file, err := os.Open("/Users/peter/Work/pi-billion.txt")
-	var readBytes int64
-	var cycles int64
+	var readBytes int64 = 1000
+	var cycles int64 = 1000000
 	var i int64
 	var searchStr string
+	bytes := make([]byte, readBytes)
 
 	if len(os.Args) > 1 {
 		searchStr = os.Args[1]
 	} else {
 		searchStr = "000000"
 	}
-
-	readBytes = 1000
-	cycles = 1000000
-	bytes := make([]byte, readBytes)
+	file, err := os.Open("/Users/peter/Work/pi-billion.txt")
+	check(err)
+	defer file.Close()
 
 	for i = 0; i <= cycles; i++ {
 		if i == 0 {

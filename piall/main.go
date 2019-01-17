@@ -25,6 +25,9 @@ func main() {
 	start := time.Now()
 
 	file, err := os.Open("/Users/peter/Work/pi-billion.txt")
+	check(err)
+	defer file.Close()
+
 	// to search all of the 000000~999999 numbers
 	mp := make(map[string]int64)
 	for k := 0; k < 1000000; k++ {
