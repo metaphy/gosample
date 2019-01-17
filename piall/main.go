@@ -1,6 +1,7 @@
 /*
 Find all 6-digit numbers' location at PI
 A file named "result" generated
+Run Time = 1254.18sec on my Mac
 */
 package main
 
@@ -17,20 +18,9 @@ func check(e error) {
 	}
 }
 
-func index(searchStr string, bytes []byte) int {
-	for i := 0; i <= len(bytes)-len(searchStr); i++ {
-		if searchStr[0] == bytes[i] && searchStr[1] == bytes[i+1] &&
-			searchStr[2] == bytes[i+2] && searchStr[3] == bytes[i+3] &&
-			searchStr[4] == bytes[i+4] && searchStr[5] == bytes[i+5] {
-			return i
-		}
-	}
-	return -1
-}
-
 func main() {
-	const READ_BYTES int64 = 1000
-	const READ_CYCLES int64 = 1000000
+	const READ_BYTES int64 = 4096
+	const READ_CYCLES int64 = 1000000000 / READ_BYTES
 	var i int64 = 0
 	start := time.Now()
 
@@ -59,12 +49,12 @@ func main() {
 		check(err)
 		str := string(bytes)
 
-		for key := range mp {
-			if strings.Contains(str, key) {
-				relative := index(key, bytes)
-				mp[key] = i*(READ_BYTES-5) + int64(relative) - 1
-				result.WriteString(fmt.Sprintf("\"%s\" at %d\n", key, mp[key]))
-				delete(mp, key)
+		for searchStr := range mp {
+			index := strings.Index(str, searchStr)
+			if index >= 0 {
+				mp[searchStr] = i*(READ_BYTES-5) + int64(index) - 1
+				result.WriteString(fmt.Sprintf("\"%s\" at %d\n", searchStr, mp[searchStr]))
+				delete(mp, searchStr)
 			}
 		}
 	}
