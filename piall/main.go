@@ -19,8 +19,8 @@ func check(e error) {
 }
 
 func main() {
-	const READ_BYTES int64 = 4096
-	const READ_CYCLES int64 = 1000000000 / READ_BYTES
+	const READ_BYTES int64 = 1024 * 4
+	const READ_CYCLES int64 = 1000000000/READ_BYTES + 1
 	var i int64 = 0
 	start := time.Now()
 
@@ -29,10 +29,10 @@ func main() {
 	defer file.Close()
 
 	// to search all of the 000000~999999 numbers
-	mp := make(map[string]int64)
-	for k := 0; k < 1000000; k++ {
+	numbers := make(map[string]bool)
+	for k := 0; k < 1e6; k++ {
 		key := fmt.Sprintf("%06d", k)
-		mp[key] = -1
+		numbers[key] = false
 	}
 
 	// result write to
@@ -52,15 +52,14 @@ func main() {
 		check(err)
 		str := string(bytes)
 
-		for searchStr := range mp {
-			index := strings.Index(str, searchStr)
+		for searchNum := range numbers {
+			index := strings.Index(str, searchNum)
 			if index >= 0 {
-				mp[searchStr] = i*(READ_BYTES-5) + int64(index) - 1
-				result.WriteString(fmt.Sprintf("\"%s\" at %d\n", searchStr, mp[searchStr]))
-				delete(mp, searchStr)
+				result.WriteString(fmt.Sprintf("\"%s\" at %d\n", searchNum, i*(READ_BYTES-5)+int64(index)-1))
+				delete(numbers, searchNum)
 			}
 		}
 	}
 	secs := time.Since(start).Seconds()
-	fmt.Printf("Done.  map size = %d.  Time = %.2fsec\n", len(mp), secs)
+	fmt.Printf("Done.  map size = %d.  Time = %.2fsec\n", len(numbers), secs)
 }
