@@ -21,8 +21,8 @@ func check(e error) {
 }
 
 func main() {
-	const ReadBytes int = 1024 * 4
-	const ReadCycles int = 1000000000/ReadBytes + 1
+	const ReadBytes = 1024 * 4
+	const ReadCycles = 1000000000/ReadBytes + 1
 	var cycle int
 	var buf bytes.Buffer
 
