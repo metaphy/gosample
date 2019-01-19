@@ -18,6 +18,7 @@ func main() {
 			buf.WriteByte(',')
 		}
 	}
+
 	// fmt write to buf
 	fmt.Fprintf(&buf, "] -- Done")
 	fmt.Println(buf.String())
