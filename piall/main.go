@@ -1,13 +1,13 @@
 /*
-Find all 6-digit numbers' location at PI
-A file named "result" generated
-Run Time = 1358.19sec on my Mac
+Find all 6-digit numbers' location at PI; a file of the result generated.
+Two methods demonstrated below; each one takes around 1300 sec on my Mac
 */
 package main
 
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"sort"
 	"strings"
@@ -20,10 +20,45 @@ func check(e error) {
 	}
 }
 
-func main() {
+// Method 1
+func piall01() {
+	var buf bytes.Buffer
+
+	start := time.Now()
+	fmt.Println(start)
+	// to search all of the 000000~999999 numbers
+	numbers := make(map[int]bool)
+	for k := 0; k < 1e6; k++ {
+		numbers[k] = false
+	}
+
+	// Open the file PI
+	data, err := ioutil.ReadFile("/Users/peter/Work/pi-billion.txt")
+	check(err)
+
+	// result write to
+	result, err := os.Create("result.txt")
+	check(err)
+	defer result.Close()
+
+	str := string(data)
+	for num := range numbers {
+		numStr := fmt.Sprintf("%06d", num)
+		index := strings.Index(str, numStr)
+		if index >= 0 {
+			buf.WriteString(fmt.Sprintf("\"%s\" : %d\n", numStr, index-1))
+			delete(numbers, num)
+		}
+	}
+	result.WriteString(buf.String())
+	secs := time.Since(start).Seconds()
+	fmt.Printf("Done.  map size = %d.  Time = %.2fsec\n", len(numbers), secs)
+}
+
+// Method 2. Sorted the result
+func piall02() {
 	const ReadBytes = 1024 * 4
 	const ReadCycles = 1000000000/ReadBytes + 1
-	var cycle int
 	var buf bytes.Buffer
 
 	start := time.Now()
@@ -45,7 +80,7 @@ func main() {
 	defer result.Close()
 
 	bytes := make([]byte, ReadBytes)
-	for cycle = 0; cycle <= ReadCycles; cycle++ {
+	for cycle := 0; cycle <= ReadCycles; cycle++ {
 		if cycle == 0 {
 			_, err = file.Seek(0, 0)
 		} else {
@@ -69,8 +104,8 @@ func main() {
 				delete(numbers, num)
 			}
 		}
-		sort.Ints(foundLocs)
 
+		sort.Ints(foundLocs)
 		for _, loc := range foundLocs {
 			numStr := fmt.Sprintf("%06d", mapFoundNumbers[loc])
 			buf.WriteString(fmt.Sprintf("\"%s\" : %d\n", numStr, loc))
@@ -79,4 +114,9 @@ func main() {
 	result.WriteString(buf.String())
 	secs := time.Since(start).Seconds()
 	fmt.Printf("Done.  map size = %d.  Time = %.2fsec\n", len(numbers), secs)
+}
+
+func main() {
+	piall01()
+	piall02()
 }
