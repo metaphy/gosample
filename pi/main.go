@@ -17,11 +17,11 @@ func check(e error) {
 }
 
 func main() {
-	var readBytes int64 = 256
-	var cycles int64 = 1000000000 / 256
-	var i int64
+	const ReadBytes = 256
+	const ReadCycles = 1000000000 / 256
+
 	var searchStr string
-	bytes := make([]byte, readBytes)
+	bytes := make([]byte, ReadBytes)
 
 	if len(os.Args) > 1 {
 		searchStr = os.Args[1]
@@ -32,11 +32,11 @@ func main() {
 	check(err)
 	defer file.Close()
 
-	for i = 0; i <= cycles; i++ {
+	for i := 0; i <= ReadCycles; i++ {
 		if i == 0 {
 			_, err = file.Seek(0, 0)
 		} else {
-			_, err = file.Seek(i*(readBytes-5), 0)
+			_, err = file.Seek(int64(i*(ReadBytes-5)), 0)
 		}
 		check(err)
 		_, err = file.Read(bytes)
@@ -45,7 +45,7 @@ func main() {
 		str := string(bytes)
 		index := strings.Index(str, searchStr)
 		if index >= 0 {
-			location := i*(readBytes-5) + int64(index) - 1
+			location := i*(ReadBytes-5) + index - 1
 			fmt.Printf("\"%s\" is located at %d \n%s\n", searchStr,
 				location, string(bytes))
 			break
