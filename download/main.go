@@ -73,7 +73,7 @@ func save(file string, url string) {
 
 // main function
 func main() {
-	site := "http://desk.zol.com.cn"
+	site := "http://somesite"
 	resp, err := http.Get(site)
 	check(err)
 
