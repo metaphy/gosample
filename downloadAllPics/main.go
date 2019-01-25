@@ -109,18 +109,6 @@ func findImageNode(n *html.Node) {
 		for _, img := range n.Attr {
 			if img.Key == "src" {
 				save(img.Val)
-				/*
-					for _, imgB := range n.Attr {
-						if imgB.Key == "src" {
-							imgURL := imgB.Val
-							imgNameIndex := strings.LastIndex(imgURL, "/")
-							imgName := imgURL[imgNameIndex+1:]
-							// fmt.Println(imgB.Val)
-							fmt.Printf("%s", imgName)
-							//download
-							save(imgName, imgURL)
-						}
-					}*/
 			}
 		}
 	}
