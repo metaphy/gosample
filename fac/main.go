@@ -1,6 +1,6 @@
 /*
-Factorial 30.  We cannot use int or int64 for the result, 
-because fac(30) is very large
+Factorial 30.  We cannot use int or int64 for the result,
+because fac(30) is very large.
 */
 package main
 
