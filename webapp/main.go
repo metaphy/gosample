@@ -17,6 +17,8 @@ type Welcome struct {
 }
 
 func main() {
+	//Instantiate a Welcome struct object and pass in some random information.
+	//We shall get the name of the user as a query parameter from the URL
 	welcome := Welcome{"Anonymous", time.Now().Format(time.Stamp)}
 
 	//We tell Go exactly where we can find our html file. We ask Go to parse the html file (Notice
@@ -29,17 +31,24 @@ func main() {
 	//html can refer to when looking for our css and other files.
 	http.Handle("/static/",
 		http.StripPrefix("/static",
-			http.FileServer(http.Dir("static"))))
+			http.FileServer(http.Dir("static")))) //Go looks in the relative "static" directory first using http.FileServer(), then matches it to a
+	//url of our choice as shown in http.Handle("/static/"). This url is what we need when referencing our css files
+	//once the server begins. Our html code would therefore be <link rel="stylesheet"  href="/static/stylesheet/...">
+	//It is important to note the url in http.Handle can be whatever we like, so long as we are consistent.
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if name := r.FormValue("name"); name != "" {
 			welcome.Name = name
 		}
+		//If errors show an internal server error message
+		//I also pass the welcome struct to the welcome-template.html file.
 		if err := templates.ExecuteTemplate(w, "welcome-template.html", welcome); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	})
 
+	//Start the web server, set the port to listen to 8080. Without a path it assumes localhost
+	//Print any errors from starting the webserver using fmt
 	fmt.Println("Listening")
 	fmt.Println(http.ListenAndServe(":8080", nil))
 
