@@ -20,6 +20,6 @@ func main() {
 	}
 
 	// fmt write to buf
-	fmt.Fprintf(&buf, "] -- Done")
+	fmt.Fprintf(&buf, "]")
 	fmt.Println(buf.String())
 }
