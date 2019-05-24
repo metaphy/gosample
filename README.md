@@ -1,6 +1,7 @@
 # go samples
 This project consists of samples of go programming language.
 
+* **bisearch**: binary search
 * **download**: Download pictures
 * **downloadAllPics**: Download all of the pictures
 * **fac**: Calculate Factorial 30, using math/big
