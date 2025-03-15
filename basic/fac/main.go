@@ -1,7 +1,9 @@
 /*
 Factorial 30.  We cannot use int or int64 for the result,
 because fac(30) is very large.
+Instead, we use big.NewInt
 */
+
 package main
 
 import (
@@ -12,7 +14,7 @@ import (
 func main() {
 	var n int64
 	for n = 0; n <= 30; n++ {
-		fmt.Printf("Fac(%d)=%d\n", n, fac(n))
+		fmt.Printf("Fac(%d) = %d\n", n, fac(n))
 	}
 }
 

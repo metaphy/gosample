@@ -4,6 +4,7 @@ Drawing
 package main
 
 import (
+    "fmt"
 	"image"
 	"image/color"
 	"image/draw"
@@ -18,6 +19,7 @@ var (
 )
 
 func main() {
+    fmt.Println("Access localhost:9999")
 	http.HandleFunc("/", handl)
 	http.ListenAndServe(":9999", nil)
 }
